@@ -114,54 +114,57 @@ public:
     {
     }
 
-    void getName()
+    std::string getName()
     {
-        std::cout << m_name;
+        return m_name;
     }
 
-    void getColor()
+    std::string getColor()
     {
-        std::cout << m_color;
+        return m_color;
     }
 
-    /*setFruitName (std::string name)
+    void setName(std::string name)
     {
         m_name = name;
     }
 
-    setFruitColor (std::string color)
+    void setColor(std::string color)
     {
         m_color = color;
-    }*/
+    }
 };
 
-/*class Apple : public Fruit
+class Apple : public Fruit
 {
 public:
-    Apple (std::string color):
-
+    Apple(std::string color)
     {
-        Fruit::setName ("Apple");
-        Fruit::setColor (color);
+        Fruit::setName("Apple");
+        Fruit::setColor(color);
     }
 };
 
 class Banana : public Fruit
 {
 public:
-    Banana ():
-    Fruit (name = "Banana", color = "yellow")
+    Banana()
     {
-
+        Fruit::setName("Banana");
+        Fruit::setColor("yellow");
     }
 };
 
 class GrannySmith : public Apple
 {
 public:
-    GrannySmith():
-    Fruit(name = "Granny Smith apple", color = "green")
-};*/
+    GrannySmith(std::string color = "green") :
+        Apple(color)
+    {
+        Apple::setName("Granny Smith apple");
+    }
+};
+
 
 int main()
 {
@@ -176,19 +179,26 @@ int main()
     Lyly.getStudent();
     Egor.getStudent();
 
-    Fruit a();
-    a.getName();
-    a.getColor();
+    Apple a("red");
+    Banana b;
+    GrannySmith c;
 
-
-    //Apple a("red");
-    //Banana b;
-    //GrannySmith c;
-
-    //std::cout << "My " << a.getName() << " is " << a.getColor() << ".\n";
-    //std::cout << "My " << b.getName() << " is " << b.getColor() << ".\n";
-    //std::cout << "My " << c.getName() << " is " << c.getColor() << ".\n";
+    std::cout << "My " << a.getName() << " is " << a.getColor() << ".\n";
+    std::cout << "My " << b.getName() << " is " << b.getColor() << ".\n";
+    std::cout << "My " << c.getName() << " is " << c.getColor() << ".\n";
 
 
     return 0;
 }
+
+/*Blackjack
+
+Класс           Родительский класс      Описание
+Game            нет                     Игра
+Card            нет                     Карта
+Deck            нет                     Колода и действия с ней
+Hand            Deck                    Набор карт из Deck
+Player          нет                     Человек-игрок
+House           нет                     Компьютер-игрок
+Win             Deck                    Набор карт из Deck, необходимый для победы
+*/
