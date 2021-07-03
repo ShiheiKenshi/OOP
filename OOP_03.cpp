@@ -8,12 +8,12 @@ class Figure
 {
 public:
 
-    Figure ()
+    Figure()
     {
 
     }
 
-    ~Figure ()
+    ~Figure()
     {
 
     }
@@ -30,8 +30,8 @@ private:
 
 public:
 
-    Parallelogram (int base, int height):
-    m_base(base), m_height(height)
+    Parallelogram(int base, int height) :
+        m_base(base), m_height(height)
     {
 
     }
@@ -53,8 +53,8 @@ private:
 
 public:
 
-    Circle (double radius):
-    m_radius(radius)
+    Circle(double radius) :
+        m_radius(radius)
     {
 
     }
@@ -68,8 +68,8 @@ public:
 class Rectangle : public Parallelogram
 {
 public:
-    Rectangle(int base, int height):
-    Parallelogram (base, height)
+    Rectangle(int base, int height) :
+        Parallelogram(base, height)
     {
 
     }
@@ -83,8 +83,8 @@ public:
 class Square : public Parallelogram
 {
 public:
-    Square(int base, int height):
-    Parallelogram(base, height)
+    Square(int base, int height) :
+        Parallelogram(base, height)
     {
 
     }
@@ -98,8 +98,8 @@ public:
 class Rhombus : public Parallelogram
 {
 public:
-    Rhombus(int base, int height):
-    Parallelogram(base, height)
+    Rhombus(int base, int height) :
+        Parallelogram(base, height)
     {
 
     }
@@ -117,13 +117,13 @@ private:
     string m_model;
 
 public:
-    Car (string company = "Company", string model = "Model"):
-    m_company (company), m_model (model)
+    Car(string company = "Company", string model = "Model") :
+        m_company(company), m_model(model)
     {
         cout << "This car is " << m_model << " from " << m_company << endl;
     }
 
-    ~Car () = default;
+    ~Car() = default;
 
     friend class PassengerCar;
     friend class Bus;
@@ -134,8 +134,8 @@ class PassengerCar : virtual public Car
 {
 public:
 
-    PassengerCar (string company, string model):
-    Car (company, model)
+    PassengerCar(string company, string model) :
+        Car(company, model)
     {
         cout << "This PassengerCar is " << m_model << " from " << m_company << endl;
     }
@@ -145,8 +145,8 @@ class Bus : virtual public Car
 {
 public:
 
-    Bus (string company, string model):
-    Car (company, model)
+    Bus(string company, string model) :
+        Car(company, model)
     {
         cout << "This Bus is " << m_model << " from " << m_company << endl;
     }
@@ -156,8 +156,8 @@ class Minivan : public PassengerCar, public Bus
 {
 public:
 
-    Minivan (string company, string model):
-    PassengerCar (company, model), Bus (company, model), Car (company, model)
+    Minivan(string company, string model) :
+        PassengerCar(company, model), Bus(company, model), Car(company, model)
     {
         cout << "This Minivan is " << Car::m_model << " from " << Car::m_company << endl;
     }
@@ -169,24 +169,16 @@ private:
 
     int num;
     int den;
-    void normalize ();
-    int gcf (int a, int b);
-    int lcm (int a, int b);
+
 public:
 
-    Fraction (int numenator, int denominator):
-    num(numenator), den(denominator)
+    Fraction(int numenator, int denominator) :
+        num(numenator), den(denominator)
     {
         if (denominator == 0)
-            throw runtime_error ("Denominator can't be zero");
+            throw runtime_error("Denominator can't be zero");
         else
             cout << "Fraction: " << get_num() << '/' << get_den() << endl;
-    }
-
-    void set (int n, int d)
-    {
-        num = n;
-        den = d;
     }
 
     int get_num()
@@ -199,68 +191,151 @@ public:
         return den;
     }
 
-    Fraction add (Fraction other);
+    friend Fraction operator+ (const Fraction& s1, const Fraction& s2);
 
-    Fraction mult (Fraction other);
+    friend Fraction operator* (const Fraction& s1, const Fraction& s2);
 
-    Fraction subtract (Fraction other);
+    friend Fraction operator- (const Fraction& s1, const Fraction& s2);
 
-    Fraction divide (Fraction other);
+    friend Fraction operator/ (const Fraction& s1, const Fraction& s2);
+
+    friend Fraction operator- (const Fraction& s1);
+
+    friend bool operator> (const Fraction& s1, const Fraction& s2);
+
+    friend bool operator>= (const Fraction& s1, const Fraction& s2);
+
+    friend bool operator< (const Fraction& s1, const Fraction& s2);
+
+    friend bool operator<= (const Fraction& s1, const Fraction& s2);
 
 };
 
-Fraction Fraction::add (Fraction other)
+Fraction operator+ (const Fraction& s1, const Fraction& s2)
 {
-    Fraction fract;
-    fract.set(num*other.den+other.num*den, den*other.den);
-    return fract;
+    return Fraction(s1.num * s2.den + s2.num * s1.den, s1.den * s2.den);
 };
 
-Fraction Fraction::mult (Fraction other)
+Fraction operator* (const Fraction& s1, const Fraction& s2)
 {
-    Fraction fract;
-    fract.set(num*other.num, den*other.den);
-    return fract;
+    return Fraction(s1.num * s2.num, s1.den * s2.den);
 };
 
-Fraction Fraction::subtract (Fraction other)
+Fraction operator- (const Fraction& s1, const Fraction& s2)
 {
-    Fraction fract;
-    fract.set(num*other.den-other.num*den, den*other.den);
-    return fract;
+    return Fraction(s1.num * s2.den - s2.num * s1.den, s1.den * s2.den);
 };
 
-Fraction Fraction::divide (Fraction other)
+Fraction operator/ (const Fraction& s1, const Fraction& s2)
 {
-    Fraction fract;
-    fract.set(num*other.den, den*other.num);
-    return fract;
+    return Fraction(s1.num * s2.den, s1.den * s2.num);
 };
 
+Fraction operator- (const Fraction& s1)
+{
+    return Fraction((-1) * s1.num, s1.den);
+};
 
-int main ()
+bool operator> (const Fraction& s1, const Fraction& s2)
+{
+    return (s1.num * s2.den) > (s1.den * s2.num);
+};
+
+bool operator>= (const Fraction& s1, const Fraction& s2)
+{
+    return (s1.num * s2.den) >= (s1.den * s2.num);
+};
+
+bool operator< (const Fraction& s1, const Fraction& s2)
+{
+    return !(s1 >= s2);
+};
+
+bool operator<= (const Fraction& s1, const Fraction& s2)
+{
+    return !(s1 > s2);
+};
+
+class Card
+{
+public:
+
+    enum rank
+    {
+        ACE = 1, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN,
+        JACK, QUEEN, KING
+    };
+
+    enum suit
+    {
+        CLUBS, DIAMONDS, HEARTS, SPADES
+    };
+
+    Card(rank r = ACE, suit s = SPADES, bool ifu = true) :
+        m_Rank(r), m_Suit(s), m_IsFaceUp(ifu)
+    {
+
+    };
+
+    int GetValue() const
+    {
+        int value = 0;
+
+        if (m_IsFaceUp)
+        {
+            value = m_Rank;
+        }
+        return value;
+    };
+
+
+    void Flip()
+    {
+        m_IsFaceUp = !(m_IsFaceUp);
+    };
+
+private:
+
+    rank m_Rank;
+    suit m_Suit;
+    bool m_IsFaceUp;
+
+};
+
+int main()
 {
 
-    Parallelogram (2, 3).area();
-    Circle (3).area();
-    Rectangle (3, 3).area();
-    Square (1, 4).area();
-    Rhombus (2, 2).area();
+    Parallelogram(2, 3).area();
+    Circle(3).area();
+    Rectangle(3, 3).area();
+    Square(1, 4).area();
+    Rhombus(2, 2).area();
     cout << endl;
 
 
-    Car ("Toyota", "Prado");
-    PassengerCar ("Renault", "Duster");
-    Bus ("Icarus", "66");
-    Minivan ("KIA", "Carnival");
+    Car("Toyota", "Prado");
+    PassengerCar("Renault", "Duster");
+    Bus("Icarus", "66");
+    Minivan("KIA", "Carnival");
     cout << endl;
 
-    Fraction f1 (4, 7);
-    Fraction f2 (2, 5);
-    Fraction f3 = f1.add(f2); // 34/35
-    Fraction f4 = f1.mult(f2); // 6/35
-    Fraction f5 = f1.subtract(f2); // 6/35
-    Fraction f6 = f1.divide(f2); // 20/14
+    Fraction f1(4, 7);
+    Fraction f2(2, 5);
+    Fraction f3 = f1 + f2; // 34/35
+    Fraction f4 = f1 * f2; // 8/35
+    Fraction f5 = f1 - f2; // 6/35
+    Fraction f6 = f1 / f2; // 20/14
+    Fraction f7 = -f1; // -4/7
+    Fraction f8(2, 5);
+    Fraction f9(1, 5);
+    if (f8 > f9)
+        cout << "Fraction " << f8.get_num() << '/' << f8.get_den() << " are greater than " << f9.get_num() << '/' << f9.get_den() << '.' << endl;
+    if (f8 >= f9)
+        cout << "Fraction " << f8.get_num() << '/' << f8.get_den() << " are greater or equal than " << f9.get_num() << '/' << f9.get_den() << '.' << endl;
+    if (f8 < f9)
+        cout << "Fraction " << f9.get_num() << '/' << f9.get_den() << " are greater than " << f8.get_num() << '/' << f8.get_den() << '.' << endl;
+    if (f8 <= f9)
+        cout << "Fraction " << f9.get_num() << '/' << f9.get_den() << " are greater or equal than " << f8.get_num() << '/' << f8.get_den() << '.' << endl;
 
     return 0;
 }
